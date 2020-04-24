@@ -70,10 +70,21 @@ ggplot(sau_mad, aes(x=year, y=tonnes, color = fishing_sector, fill = fishing_sec
 
 
 # Subset by piscivores
-pred <- subset(sau, scientific_name=="Nemipteridae" | scientific_name=="Priacanthus" | scientific_name=="Mugilidae" | scientific_name=="Monacanthidae" | scientific_name=="Lutjanidae" | scientific_name=="Serranidae" |scientific_name=="Mugilidae" | scientific_name=="Epinephelus" | scientific_name=="Lethrinidae" | scientific_name=="Haemulidae" )
-ggplot(pred, aes(x = year, y = tonnes, color = scientific_name)) + geom_line(stat="summary", position="dodge", fun.y = "sum") + theme_classic() +
+sau_pred <- subset(sau, scientific_name=="Nemipteridae" | scientific_name=="Priacanthus" | scientific_name=="Mugilidae" | scientific_name=="Monacanthidae" | scientific_name=="Lutjanidae" | scientific_name=="Serranidae" |scientific_name=="Mugilidae" | scientific_name=="Epinephelus" | scientific_name=="Lethrinidae" | scientific_name=="Haemulidae" )
+
+ggplot(sau_pred, aes(x = year, y = tonnes, color = scientific_name)) + geom_line(stat="summary", position="dodge", fun.y = "sum") + theme_classic() +
   scale_x_continuous(breaks=ii) + theme(axis.text.x = element_text(angle=45,  hjust = 1)) + scale_y_continuous(expand= c(0,0)) + theme(axis.text = element_text(color="black")) + 
   xlab("") + ylab("Tonnes") + ggtitle("Piscivores SAU catch")
 
+# Unidentified terms
+sau_unid <- subset(sau, scientific_name=="Miscellaneous marine crustaceans" | scientific_name=="Miscellaneous aquatic invertebrates" | scientific_name=="Miscellaneous diadromous fishes" | scientific_name=="Marine finfishes not identified" | scientific_name=="Marine fishes not identified" | scientific_name=="Marine pelagic fishes not identified")
+aggregate(tonnes ~ scientific_name, data=sau_unid, FUN=sum)
+aggregate(tonnes ~ area_name, data=sau_unid, FUN=sum)
 
+ggplot(sau_unid, aes(x = year, y = tonnes, color = scientific_name)) + geom_line(stat="summary", position="dodge", fun.y = "sum") + theme_classic() +
+  scale_x_continuous(breaks=ii) + theme(axis.text.x = element_text(angle=45,  hjust = 1)) + scale_y_continuous(expand= c(0,0)) + theme(axis.text = element_text(color="black")) + 
+  xlab("") + ylab("Tonnes") + ggtitle("Unidentified SAU catch")
 
+ggplot(sau_unid, aes(x = year, y = tonnes, color = fishing_sector)) + geom_line(stat="summary", position="dodge", fun.y = "sum") + theme_classic() +
+  scale_x_continuous(breaks=ii) + theme(axis.text.x = element_text(angle=45,  hjust = 1)) + scale_y_continuous(expand= c(0,0)) + theme(axis.text = element_text(color="black")) + 
+  xlab("") + ylab("Tonnes") + ggtitle("Unidentified SAU catch")
